@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Form from './index';
-import WorkoutPlan from './workoutPlan';
+import WorkoutPlan from '../Plan/workoutPlan';
 
 const Stack = createStackNavigator();
 

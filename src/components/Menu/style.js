@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 20,
         fontSize: 24,
-        color: 'white',
+        color: 'black',
         fontWeight: 'bold',
       },
       image: {
@@ -35,17 +35,14 @@ const styles = StyleSheet.create({
       },
       menuButton: {
         position: 'absolute',
-        top: 70,
-        left: 20,
+        top: 40,
+        right: 0,
         backgroundColor: 'transparent',
       },
-    
-      buttonText: {
-        color: 'white', 
-        fontWeight: 'bold',
-        fontSize: 15,
-
-      },
+      menuIcon:{
+        width: 100, 
+        height: 100,
+      },  
 });
 
 export default styles

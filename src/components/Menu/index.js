@@ -33,21 +33,14 @@ const Form = () => {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../Images/gym.jpg')}
-        style={styles.image}
-        flex={1}
+      <Image source={require('../../../assets/gym1.jpeg')} style={styles.image} flex={1}
       />
       <View style={styles.title}><Text style={styles.title}>TreinoTracker</Text></View>
       <TouchableOpacity style={styles.menuButton} onPress={openMenu}>
-        <Text style={styles.buttonText}>MENU</Text>
+        <Image source={require('../../../assets/icon-menu.png')} style={styles.menuIcon}/>
       </TouchableOpacity>
 
-      <Modal
-        visible={modalVisible}
-        animationType="slide"
-        onRequestClose={closeMenu}
-      >
+      <Modal visible={modalVisible} animationType="slide" onRequestClose={closeMenu}>
         {conteudoMenu}
       </Modal>
     </View>
