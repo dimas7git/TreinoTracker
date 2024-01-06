@@ -1,35 +1,57 @@
 import React, { useState } from 'react';
-import { View, Text, Button, Modal } from 'react-native';
+import { View, Button, Modal, Image, Text,TouchableOpacity} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import styles from './style';
 
-export default function Form() {
-    const [modalVisible, setModalVisible] = useState(false);
-  
-    const abrirMenu = () => {
-      setModalVisible(true);
-    };
-  
-    const fecharMenu = () => {
-      setModalVisible(false);
-    };
-  
-    const conteudoMenu = (
-      <View style={styles.menuContainer}>
-        <Button style={styles.menuText} title="GRADE DE TREINO" />
-        <Button style={styles.menuText} title="EVOLUÇÃO" />
-        <Button onPress={fecharMenu} title="Fechar Menu" />
+const Stack = createStackNavigator();
+
+const Form = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation();
+
+  const openMenu = () => {
+    setModalVisible(true);
+  };
+
+  const closeMenu = () => {
+    setModalVisible(false);
+  };
+
+  const openWorkout = () => {
+    setModalVisible(false);
+    navigation.navigate('WorkoutPlan');
+  };
+
+  const conteudoMenu = (
+    <View style={styles.menuContainer}>
+      <View style={styles.menuButton}>
+        <Button onPress={openWorkout} title="Abrir cronograma de treino" />
       </View>
-    );
-  
-    return (
-      <View style={styles.container}>
-        <View style={styles.menuButton}>
-          <Button onPress={abrirMenu} title="MENU" />
-        </View>
-  
-        <Modal visible={modalVisible} animationType="slide" onRequestClose={fecharMenu}>
-          {conteudoMenu}
-        </Modal>
-      </View>
-    );
-  }
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      <Image
+        source={require('../Images/gym.jpg')}
+        style={styles.image}
+        flex={1}
+      />
+      <View style={styles.title}><Text style={styles.title}>TreinoTracker</Text></View>
+      <TouchableOpacity style={styles.menuButton} onPress={openMenu}>
+        <Text style={styles.buttonText}>MENU</Text>
+      </TouchableOpacity>
+
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        onRequestClose={closeMenu}
+      >
+        {conteudoMenu}
+      </Modal>
+    </View>
+  );
+};
+
+export default Form;
