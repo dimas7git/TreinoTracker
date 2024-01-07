@@ -1,16 +1,16 @@
+// DiaDaSemana.js
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './style';
 
-const DiaDaSemana = ({ nomeDia, selecionarDia }) => {
+const DiaDaSemana = ({ dayName, visibleInfo, SelectDay }) => {
   const [exercicios, setExercicios] = useState([]);
 
   useEffect(() => {
-    // Recupera os exercícios armazenados no AsyncStorage
-    const carregarExercicios = async () => {
+    const loadExercises = async () => {
       try {
-        const exerciciosArmazenados = await AsyncStorage.getItem(`exercicios_${nomeDia}`);
+        const exerciciosArmazenados = await AsyncStorage.getItem(`exercicios_${dayName}`);
         if (exerciciosArmazenados) {
           setExercicios(JSON.parse(exerciciosArmazenados));
         }
@@ -19,52 +19,50 @@ const DiaDaSemana = ({ nomeDia, selecionarDia }) => {
       }
     };
 
-    carregarExercicios();
-  }, [nomeDia]);
+    loadExercises();
+  }, [dayName]);
 
-  const salvarExercicios = async () => {
-    // Salva os exercícios no AsyncStorage
+  const saveExercises = async () => {
     try {
-      await AsyncStorage.setItem(`exercicios_${nomeDia}`, JSON.stringify(exercicios));
+      await AsyncStorage.setItem(`exercicios_${dayName}`, JSON.stringify(exercicios));
     } catch (error) {
       console.error('Erro ao salvar exercícios:', error);
     }
   };
 
-
-  const adicionarExercicio = () => {
+  const addExercise = () => {
     setExercicios((prevState) => [...prevState, { exercicio: '', repeticoes: '', series: '' }]);
   };
 
-  const renderizarExercicio = ({ item, index }) => (
+  const renderExercise = ({ item, index }) => (
     <View style={styles.exercicioContainer}>
       <TextInput
         style={styles.input}
         placeholder="Nome do exercício"
         value={item.exercicio}
-        onChangeText={(text) => atualizarExercicio(text, index, 'exercicio')}
-        onBlur={salvarExercicios}
+        onChangeText={(text) => updateExercise(text, index, 'exercicio')}
+        onBlur={saveExercises}
       />
       <TextInput
         style={styles.input}
         placeholder="Número de repetições"
         value={item.repeticoes}
-        onChangeText={(text) => atualizarExercicio(text, index, 'repeticoes')}
+        onChangeText={(text) => updateExercise(text, index, 'repeticoes')}
         keyboardType="numeric"
-        onBlur={salvarExercicios}
+        onBlur={saveExercises}
       />
       <TextInput
         style={styles.input}
         placeholder="Número de séries"
         value={item.series}
-        onChangeText={(text) => atualizarExercicio(text, index, 'series')}
+        onChangeText={(text) => updateExercise(text, index, 'series')}
         keyboardType="numeric"
-        onBlur={salvarExercicios}
+        onBlur={saveExercises}
       />
     </View>
   );
 
-  const atualizarExercicio = (text, index, campo) => {
+  const updateExercise = (text, index, campo) => {
     setExercicios((prevState) => {
       const novosExercicios = [...prevState];
       novosExercicios[index][campo] = text;
@@ -74,18 +72,21 @@ const DiaDaSemana = ({ nomeDia, selecionarDia }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={selecionarDia}>
-        <Text style={styles.textDay}>{nomeDia}</Text>
+      <TouchableOpacity onPress={SelectDay}>
+        <Text style={styles.textDay}>{dayName}</Text>
       </TouchableOpacity>
-      {exercicios.map((ex, index) => (
-        <View key={index}>
-          {renderizarExercicio({ item: ex, index })}
-        </View>
-      ))}
-
-      <TouchableOpacity style={styles.button} onPress={adicionarExercicio}>
-        <Text style={styles.buttonText}>Adicionar Exercício</Text>
-      </TouchableOpacity>
+      {visibleInfo && (
+        <>
+          {exercicios.map((ex, index) => (
+            <View key={index}>
+              {renderExercise({ item: ex, index })}
+            </View>
+          ))}
+          <TouchableOpacity style={styles.button} onPress={addExercise}>
+            <Text style={styles.buttonText}>Adicionar Exercício</Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 };

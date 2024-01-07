@@ -1,39 +1,30 @@
+// WorkoutPlan.js
 import React, { useState } from 'react';
 import { View, FlatList } from 'react-native';
-import DiaDaSemana from './DiaDaSemana';
+import DiaDaSemana from './DayOfWeek';
 import styles from './style';
 
 const diasDaSemana = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
 
 const WorkoutPlan = () => {
-  const [informacoesPorDia, setInformacoesPorDia] = useState({});
+  const [selectedDay, setSelectedDay] = useState(null);
 
-  const selecionarDia = (dia) => {
-    if (informacoesPorDia[dia]) {
-      const novasInformacoes = { ...informacoesPorDia };
-      delete novasInformacoes[dia];
-      setInformacoesPorDia(novasInformacoes);
-    } else {
-      setInformacoesPorDia((prevState) => ({ ...prevState, [dia]: {} }));
-    }
+  const SelectDay = (dia) => {
+    setSelectedDay((prevDia) => (prevDia === dia ? null : dia));
   };
 
-  const renderizarDiaDaSemana = ({ item }) => (
+  const renderWeekDay = ({ item }) => (
     <DiaDaSemana
-      nomeDia={item}
-      selecionarDia={() => selecionarDia(item)}
-      informacoes={informacoesPorDia[item]}
+      key={item}
+      dayName={item}
+      SelectDay={() => SelectDay(item)}
+      visibleInfo={selectedDay === item}
     />
   );
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={diasDaSemana}
-        renderItem={renderizarDiaDaSemana}
-        keyExtractor={(item) => item}
-        horizontal
-      />
+      <FlatList data={diasDaSemana} renderItem={renderWeekDay} keyExtractor={(item) => item} horizontal/>
     </View>
   );
 };

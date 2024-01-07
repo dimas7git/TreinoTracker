@@ -6,16 +6,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
       },
-      menuContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
-      },
-      menuText: {
-        fontSize: 18,
-        marginBottom: 10,
-      },
       text:{
         top: 100, 
       },
@@ -33,16 +23,7 @@ const styles = StyleSheet.create({
         height: '100%',
         resizeMode: 'cover',
       },
-      menuButton: {
-        position: 'absolute',
-        top: 40,
-        right: 0,
-        backgroundColor: 'transparent',
-      },
-      menuIcon:{
-        width: 100, 
-        height: 100,
-      },  
+
 });
 
 export default styles
